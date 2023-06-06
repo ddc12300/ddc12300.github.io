@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+ <!-- Per insertar Codi, podeu utilitzar http://hilite.me/ -->
+    <head>
+        <title>Data Viz. Big Data UAB</title>
+        <link href="styles/style.css" rel="stylesheet" type="text/css">
+        <!-- Si voleu canviar la font o algun altre paràmetre, ho podeu fer aquí, o al CSS -->
+        <style>
+            body {
+                background-color: white;
+            }
+            .container {
+                max-width: 1100px;
+            }
+            h1, h2, h3, h4, h5, p {
+                color:black;
+            }
+            a:link {
+                color:brown;
+            }
+            a:visited {
+                color: #555a5e;
+            }
+            center img{
+                margin: 0 auto;
+                max-width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+            <p>Autores: Alumno 1, Alumno 2</p>
+            </header>
+                <h1>Esto es un titulo de ejemplo</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <h2>Subtitulo ejemplo</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <!-- Exemple de Fragment de codi generat amb http://hilite.me/ -->
+                <div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">import</span> <span style="color: #f8f8f2">capturer.crawler</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">c</span>
+    <span style="color: #f92672">import</span> <span style="color: #f8f8f2">export</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">e</span>
+
+    <span style="color: #f8f8f2">queries</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;coronavirus&quot;</span><span style="color: #f8f8f2">]</span> <span style="color: #75715e"># You can use this as a list</span>
+    <span style="color: #f8f8f2">max_results</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span> <span style="color: #75715e">## Nº of results in search</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(q,</span> <span style="color: #f8f8f2">max_results):</span>
+                <span style="color: #f8f8f2">videos</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">c</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">explore_videos(q,</span> <span style="color: #f8f8f2">max_results)</span>
+                <span style="color: #f8f8f2">e</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">export_data(videos,</span> <span style="color: #f8f8f2">q)</span>
+
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">__name__</span> <span style="color: #f92672">==</span> <span style="color: #e6db74">&quot;__main__&quot;</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">q</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">queries:</span>
+            <span style="color: #f8f8f2">main(q,</span> <span style="color: #f8f8f2">max_results)</span>
+    </pre></div>
+    <!-- Fi Fragment de codi -->
+    <h2>Esto es otro subtitulo</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <!-- Ejemplo de codigo de Grafico incrustado-->
+    <div class='tableauPlaceholder' id='viz1681300013018' style='position: relative'><noscript><a href='#'><img alt='Prmedio de streamers por dia ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;pr&#47;promstreamersdia&#47;Prmediodestreamerspordia&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='promstreamersdia&#47;Prmediodestreamerspordia' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;pr&#47;promstreamersdia&#47;Prmediodestreamerspordia&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='es-ES' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1681300013018');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                       
+            <footer>
+			<hr>
+			<p>
+               AUTORES
+            </p>
+
+			</footer>
+		</div>
+	</body>
+</html>
