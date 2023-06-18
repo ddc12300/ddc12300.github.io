@@ -39,23 +39,190 @@
                 <p>Este estudio busca analizar la evolución de las playlists del festival Viña Rock desde 2009 hasta 2023, examinando la cantidad y características de las canciones y artistas incluidos en ellas, con el objetivo de identificar las tendencias y cambios en el enfoque musical del evento a lo largo del tiempo, prestando especial atención a las proporciones de géneros musicales, la diversidad artística y la representación de artistas emergentes y establecidos. A partir de este análisis, el objetivo principal es proponer un cartel para la siguiente edición del festival que refleje los resultados obtenidos y las tendencias musicales actuales, manteniendo la identidad histórica del Viña Rock.</p>
 
                 <h2>Código utilizado</h2>
-                <p>INSERTAR CÓDIGO OP.</p>
-                <!-- Exemple de Fragment de codi generat amb http://hilite.me/ -->
-                <div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">import</span> <span style="color: #f8f8f2">capturer.crawler</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">c</span>
-    <span style="color: #f92672">import</span> <span style="color: #f8f8f2">export</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">e</span>
 
-    <span style="color: #f8f8f2">queries</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;coronavirus&quot;</span><span style="color: #f8f8f2">]</span> <span style="color: #75715e"># You can use this as a list</span>
-    <span style="color: #f8f8f2">max_results</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span> <span style="color: #75715e">## Nº of results in search</span>
+    <!-- HTML generated using hilite.me --><div style="background: #111111; overflow:auto;width:auto;background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-style: italic; background-color: #0f140f"># Importando las bibliotecas necesarias</span>
+<span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">time</span>
+<span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">csv</span>
+<span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">pandas</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">pd</span>
+<span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">spotipy</span>
+<span style="color: #fb660a; font-weight: bold">from</span> <span style="color: #ffffff">spotipy.oauth2</span> <span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">SpotifyClientCredentials</span>
 
-    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(q,</span> <span style="color: #f8f8f2">max_results):</span>
-                <span style="color: #f8f8f2">videos</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">c</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">explore_videos(q,</span> <span style="color: #f8f8f2">max_results)</span>
-                <span style="color: #f8f8f2">e</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">export_data(videos,</span> <span style="color: #f8f8f2">q)</span>
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Credenciales de la API de Spotify</span>
+<span style="color: #ffffff">client_id</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;YOUR_CLIENT_ID&#39;</span>
+<span style="color: #ffffff">client_secret</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;YOUR_CLIENT_SECRET&#39;</span>
+<span style="color: #ffffff">client_credentials_manager</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">SpotifyClientCredentials(client_id=client_id,</span> <span style="color: #ffffff">client_secret=client_secret)</span>
+<span style="color: #ffffff">sp</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">spotipy.Spotify(client_credentials_manager=client_credentials_manager)</span>
 
-    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">__name__</span> <span style="color: #f92672">==</span> <span style="color: #e6db74">&quot;__main__&quot;</span><span style="color: #f8f8f2">:</span>
-        <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">q</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">queries:</span>
-            <span style="color: #f8f8f2">main(q,</span> <span style="color: #f8f8f2">max_results)</span>
-    </pre></div>
-    <!-- Fi Fragment de codi -->
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Función para obtener todas las canciones de una lista de reproducción</span>
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">get_playlist_tracks</span><span style="color: #ffffff">(playlist_id):</span>
+    <span style="color: #ffffff">results</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.playlist_tracks(playlist_id)</span>
+    <span style="color: #ffffff">tracks</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">results[</span><span style="color: #0086d2">&#39;items&#39;</span><span style="color: #ffffff">]</span>
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Iterar a través de todas las páginas de la respuesta hasta que no haya más canciones</span>
+    <span style="color: #fb660a; font-weight: bold">while</span> <span style="color: #ffffff">results[</span><span style="color: #0086d2">&#39;next&#39;</span><span style="color: #ffffff">]:</span>
+        <span style="color: #ffffff">time.sleep(</span><span style="color: #0086f7; font-weight: bold">0.1</span><span style="color: #ffffff">)</span>
+        <span style="color: #ffffff">results</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.next(results)</span>
+        <span style="color: #ffffff">tracks.extend(results[</span><span style="color: #0086d2">&#39;items&#39;</span><span style="color: #ffffff">])</span>
+    <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">tracks</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Función para extraer información de una canción</span>
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">extract_track_info</span><span style="color: #ffffff">(track,</span> <span style="color: #ffffff">playlist_name):</span>
+    <span style="color: #ffffff">time.sleep(</span><span style="color: #0086f7; font-weight: bold">0.1</span><span style="color: #ffffff">)</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># sacar id artista</span>
+    <span style="color: #ffffff">artist_id</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;artists&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;id&#39;</span><span style="color: #ffffff">]</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Cantidad de reintentos en caso de error al obtener información del artista</span>
+    <span style="color: #ffffff">retries</span> <span style="color: #ffffff">=</span> <span style="color: #0086f7; font-weight: bold">3</span>
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">i</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">range(retries):</span>
+        <span style="color: #fb660a; font-weight: bold">try</span><span style="color: #ffffff">:</span>
+            <span style="color: #ffffff">artist</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.artist(artist_id)</span>
+            <span style="color: #fb660a; font-weight: bold">break</span>
+        <span style="color: #fb660a; font-weight: bold">except</span> <span style="color: #ffffff">Exception</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">e:</span>
+            <span style="color: #008800; font-style: italic; background-color: #0f140f"># Tiempo de espera antes de reintentar y mostrando un mensaje de error</span>
+            <span style="color: #ffffff">sleep_time</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">(</span><span style="color: #0086f7; font-weight: bold">2</span> <span style="color: #ffffff">**</span> <span style="color: #ffffff">i)</span> <span style="color: #ffffff">+</span> <span style="color: #0086f7; font-weight: bold">1</span>
+            <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;Error al obtener el artista {artist_id}: {e}, reintentando después de {sleep_time} segundos...&quot;</span><span style="color: #ffffff">)</span>
+            <span style="color: #ffffff">time.sleep(sleep_time)</span>
+    <span style="color: #fb660a; font-weight: bold">else</span><span style="color: #ffffff">:</span>
+        <span style="color: #008800; font-style: italic; background-color: #0f140f"># Si no fue posible obtener información del artista después de todos los intentos, imprime un mensaje y devuelve None</span>
+        <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;No se pudo obtener información del artista {artist_id} después de {retries} intentos&quot;</span><span style="color: #ffffff">)</span>
+        <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">None</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Extrayer géneros y número de seguidores del artista</span>
+    <span style="color: #ffffff">genres</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;, &#39;</span><span style="color: #ffffff">.join(artist[</span><span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">])</span>
+    <span style="color: #ffffff">followers</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">artist[</span><span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;total&#39;</span><span style="color: #ffffff">]</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Obtener la ID de la canción</span>
+    <span style="color: #ffffff">song_id</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;id&#39;</span><span style="color: #ffffff">]</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Definiendo la cantidad de reintentos en caso de error al obtener las características del audio</span>
+    <span style="color: #ffffff">retries</span> <span style="color: #ffffff">=</span> <span style="color: #0086f7; font-weight: bold">3</span>
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">i</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">range(retries):</span>
+        <span style="color: #fb660a; font-weight: bold">try</span><span style="color: #ffffff">:</span>
+            <span style="color: #ffffff">audio_features</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.audio_features(song_id)[</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">]</span>
+            <span style="color: #fb660a; font-weight: bold">break</span>
+        <span style="color: #fb660a; font-weight: bold">except</span> <span style="color: #ffffff">Exception</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">e:</span>
+            <span style="color: #008800; font-style: italic; background-color: #0f140f"># Determinando el tiempo de espera antes de reintentar y mostrando un mensaje de error</span>
+            <span style="color: #ffffff">sleep_time</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">(</span><span style="color: #0086f7; font-weight: bold">2</span> <span style="color: #ffffff">**</span> <span style="color: #ffffff">i)</span> <span style="color: #ffffff">+</span> <span style="color: #0086f7; font-weight: bold">1</span>
+            <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;Error al obtener las características del audio {song_id}: {e}, reintentando después de {sleep_time} segundos...&quot;</span><span style="color: #ffffff">)</span>
+            <span style="color: #ffffff">time.sleep(sleep_time)</span>
+    <span style="color: #fb660a; font-weight: bold">else</span><span style="color: #ffffff">:</span>
+        <span style="color: #008800; font-style: italic; background-color: #0f140f"># Si no es posible obtener las características del audio después de todos los intentos, imprime un mensaje y devuelve None</span>
+        <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;No se pudo obtener las características del audio {song_id} después de {retries} intentos&quot;</span><span style="color: #ffffff">)</span>
+        <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">None</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Obteniendo la fecha de lanzamiento del álbum y extrayendo el año</span>
+    <span style="color: #ffffff">release_date</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;release_date&#39;</span><span style="color: #ffffff">]</span>
+    <span style="color: #ffffff">release_year</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">release_date.split(</span><span style="color: #0086d2">&#39;-&#39;</span><span style="color: #ffffff">)[</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">]</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Diccionario con la información de la canción</span>
+    <span style="color: #ffffff">track_info</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">{</span>
+        <span style="color: #0086d2">&#39;track_id&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;id&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;playlist_name&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">playlist_name,</span>
+        <span style="color: #0086d2">&#39;title&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;name&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;artists&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;name&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">artist_id,</span>
+        <span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">genres,</span>
+        <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">followers,</span>
+        <span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;name&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;release_date&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">release_year,</span>
+        <span style="color: #0086d2">&#39;duration_ms&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;duration_ms&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;tempo&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">audio_features[</span><span style="color: #0086d2">&#39;tempo&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;energy&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">audio_features[</span><span style="color: #0086d2">&#39;energy&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;danceability&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">audio_features[</span><span style="color: #0086d2">&#39;danceability&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;spotify_url&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;external_urls&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;spotify&#39;</span><span style="color: #ffffff">],</span>
+        <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">]</span>
+    <span style="color: #ffffff">}</span>
+    <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">track_info</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Función para guardar el progreso de la extracción de datos en un archivo</span>
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">save_progress</span><span style="color: #ffffff">(playlist_index,</span> <span style="color: #ffffff">track_index):</span>
+    <span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(</span><span style="color: #0086d2">&#39;progress.txt&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;w&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">progress_file:</span>
+        <span style="color: #ffffff">progress_file.write(f</span><span style="color: #0086d2">&#39;{playlist_index},{track_index}&#39;</span><span style="color: #ffffff">)</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Función para cargar el progreso de la extracción de datos desde un archivo</span>
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">load_progress</span><span style="color: #ffffff">():</span>
+    <span style="color: #fb660a; font-weight: bold">try</span><span style="color: #ffffff">:</span>
+        <span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(</span><span style="color: #0086d2">&#39;progress.txt&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;r&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">progress_file:</span>
+            <span style="color: #ffffff">contents</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">progress_file.read()</span>
+            <span style="color: #ffffff">playlist_index,</span> <span style="color: #ffffff">track_index</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">map(int,</span> <span style="color: #ffffff">contents.split(</span><span style="color: #0086d2">&#39;,&#39;</span><span style="color: #ffffff">))</span>
+            <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">playlist_index,</span> <span style="color: #ffffff">track_index</span>
+    <span style="color: #fb660a; font-weight: bold">except</span> <span style="color: #ffffff">FileNotFoundError:</span>
+        <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">,</span> <span style="color: #0086f7; font-weight: bold">0</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Escribiendo la cabecera del archivo CSV</span>
+<span style="color: #ffffff">csv_header</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">[</span><span style="color: #0086d2">&#39;track_id&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;playlist_name&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;title&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;release_date&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;duration_ms&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;tempo&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;energy&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;danceability&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;spotify_url&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">]</span>
+
+<span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(</span><span style="color: #0086d2">&#39;song_data.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;w&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">newline=</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">csvfile:</span>
+    <span style="color: #ffffff">writer</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">csv.DictWriter(csvfile,</span> <span style="color: #ffffff">fieldnames=csv_header)</span>
+    <span style="color: #ffffff">writer.writeheader()</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Lista de IDs de playlist para extraer datos</span>
+<span style="color: #ffffff">playlist_ids</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">[</span><span style="color: #0086d2">&#39;3zb78wIWvn9X1so8dceWca&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;3LVAF8rnqurv9Kzdo8kAsT&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;1WacouuToRBMhBlVUVbnzT&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;3vsvh15C5NYUXLjBazAVh3&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;4vuUpAwE3vTIWf3CTou0wB&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;1P0z4BsLOwtrpGEm7wPqFA&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;5vcielrvT47NdtHF9VrG9z&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;7rT0e4vvH7hHJnFLULVN8m&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;6eppRY4vIjAlTCfmtXT4Vy&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;0Tx3fUnxs0ZE0O7A8DQozJ&#39;</span><span style="color: #ffffff">]</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Cargar el progreso de extracción de datos desde el archivo</span>
+<span style="color: #ffffff">start_playlist_index,</span> <span style="color: #ffffff">start_track_index</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">load_progress()</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Iterar a través de todas las playlists y extrayendo información de las canciones</span>
+<span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">playlist_index,</span> <span style="color: #ffffff">playlist_id</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">enumerate(playlist_ids[start_playlist_index:],</span> <span style="color: #ffffff">start=start_playlist_index):</span>
+    <span style="color: #ffffff">tracks</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">get_playlist_tracks(playlist_id)</span>
+    <span style="color: #ffffff">playlist_name</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.playlist(playlist_id)[</span><span style="color: #0086d2">&#39;name&#39;</span><span style="color: #ffffff">]</span>
+
+    <span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(</span><span style="color: #0086d2">&#39;song_data.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;a&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">newline=</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">csvfile:</span>
+        <span style="color: #ffffff">writer</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">csv.DictWriter(csvfile,</span> <span style="color: #ffffff">fieldnames=csv_header)</span>
+
+        <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">track_index,</span> <span style="color: #ffffff">track</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">enumerate(tracks[start_track_index:],</span> <span style="color: #ffffff">start=start_track_index):</span>
+            <span style="color: #ffffff">save_progress(playlist_index,</span> <span style="color: #ffffff">track_index)</span>
+            <span style="color: #ffffff">track_info</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">extract_track_info(track,</span> <span style="color: #ffffff">playlist_name)</span>
+            <span style="color: #fb660a; font-weight: bold">if</span> <span style="color: #ffffff">track_info</span> <span style="color: #ffffff">is</span> <span style="color: #ffffff">not</span> <span style="color: #ffffff">None:</span>
+                <span style="color: #ffffff">writer.writerow(track_info)</span>
+            <span style="color: #ffffff">start_track_index</span> <span style="color: #ffffff">=</span> <span style="color: #0086f7; font-weight: bold">0</span>
+
+    <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;Playlist &#39;{playlist_name}&#39; data saved to song_data.csv.&quot;</span><span style="color: #ffffff">)</span>
+    <span style="color: #ffffff">save_progress(playlist_index</span> <span style="color: #ffffff">+</span> <span style="color: #0086f7; font-weight: bold">1</span><span style="color: #ffffff">,</span> <span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">)</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Función para expandir un DataFrame de artistas con múltiples géneros en filas separadas</span>
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">expand_artist_genres</span><span style="color: #ffffff">(df):</span>
+    <span style="color: #ffffff">expanded_artists</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">[]</span>
+
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">_,</span> <span style="color: #ffffff">row</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">df.iterrows():</span>
+        <span style="color: #ffffff">artist_id</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">]</span>
+        <span style="color: #ffffff">artist</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">]</span>
+        <span style="color: #ffffff">genres</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">]</span>
+        <span style="color: #ffffff">followers</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">]</span>
+        <span style="color: #ffffff">popularity</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">]</span>
+
+        <span style="color: #fb660a; font-weight: bold">if</span> <span style="color: #ffffff">genres</span> <span style="color: #ffffff">!=</span> <span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">:</span>
+            <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">genre</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">genres.split(</span><span style="color: #0086d2">&#39;, &#39;</span><span style="color: #ffffff">):</span>
+                <span style="color: #ffffff">expanded_artists.append({</span>
+                    <span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">artist_id,</span>
+                    <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">artist,</span>
+                    <span style="color: #0086d2">&#39;genre&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">genre,</span>
+                    <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">followers,</span>
+                    <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">popularity</span>
+                <span style="color: #ffffff">})</span>
+        <span style="color: #fb660a; font-weight: bold">else</span><span style="color: #ffffff">:</span>
+            <span style="color: #ffffff">expanded_artists.append({</span>
+                <span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">artist_id,</span>
+                <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">artist,</span>
+                <span style="color: #0086d2">&#39;genre&#39;</span><span style="color: #ffffff">:</span> <span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span>
+                <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">followers,</span>
+                <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">:</span> <span style="color: #ffffff">popularity</span>
+            <span style="color: #ffffff">})</span>
+
+    <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">pd.DataFrame(expanded_artists)</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Leer el archivo CSV de datos de canciones y filtrando artistas únicos</span>
+<span style="color: #ffffff">df</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">pd.read_csv(</span><span style="color: #0086d2">&#39;song_data.csv&#39;</span><span style="color: #ffffff">)</span>
+<span style="color: #ffffff">unique_artists</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">df[[</span><span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">]].drop_duplicates(subset=</span><span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">)</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># DataFrame de artistas con múltiples géneros en filas separadas</span>
+<span style="color: #ffffff">sorted_artists_expanded</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">expand_artist_genres(unique_artists)</span>
+
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Guardando el DataFrame de artistas ordenados en un archivo CSV</span>
+<span style="color: #ffffff">sorted_artists_expanded.to_csv(</span><span style="color: #0086d2">&#39;sorted_artists_expanded.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">index=False)</span>
+</pre></div>
+
+
 
     <h2>Número de canciones en cada playlist</h2>
     <p>Con respecto a los años más recientes, como 2019, 2022 y 2023, se han mantenido cifras relevantes de canciones en las playlists con 262, 188 y 195 canciones, respectivamente. Aunque no alcanzan las cifras del pico en 2015, estas cifras reflejan que el festival sigue siendo un referente en la escena alternativa y continúa apostando por una amplia oferta musical para su audiencia.</p>   
