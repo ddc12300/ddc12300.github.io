@@ -38,7 +38,7 @@
                 <h2>Objetivos</h2>
                 <p>Este estudio busca analizar la evolución de las playlists del festival Viña Rock desde 2009 hasta 2023, examinando la cantidad y características de las canciones y artistas incluidos en ellas, con el objetivo de identificar las tendencias y cambios en el enfoque musical del evento a lo largo del tiempo, prestando especial atención a las proporciones de géneros musicales, la diversidad artística y la representación de artistas emergentes y establecidos. A partir de este análisis, el objetivo principal es proponer un cartel para la siguiente edición del festival que refleje los resultados obtenidos y las tendencias musicales actuales, manteniendo la identidad histórica del Viña Rock.</p>
 
-                <h2>Código utilizado</h2>
+                <h2>Código utilizado 1</h2>
 
     <!-- HTML generated using hilite.me --><div style="background: #111111; overflow:auto;width:auto;background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-style: italic; background-color: #0f140f"># Importando las bibliotecas necesarias</span>
 <span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">time</span>
@@ -94,7 +94,7 @@
     <span style="color: #008800; font-style: italic; background-color: #0f140f"># Obtener la ID de la canción</span>
     <span style="color: #ffffff">song_id</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;id&#39;</span><span style="color: #ffffff">]</span>
 
-    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Definiendo la cantidad de reintentos en caso de error al obtener las características del audio</span>
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Definir la cantidad de reintentos en caso de error al obtener las características del audio</span>
     <span style="color: #ffffff">retries</span> <span style="color: #ffffff">=</span> <span style="color: #0086f7; font-weight: bold">3</span>
     <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">i</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">range(retries):</span>
         <span style="color: #fb660a; font-weight: bold">try</span><span style="color: #ffffff">:</span>
@@ -110,7 +110,7 @@
         <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;No se pudo obtener las características del audio {song_id} después de {retries} intentos&quot;</span><span style="color: #ffffff">)</span>
         <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #ffffff">None</span>
 
-    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Obteniendo la fecha de lanzamiento del álbum y extrayendo el año</span>
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Obtener la fecha de lanzamiento del álbum y extrayer el año</span>
     <span style="color: #ffffff">release_date</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">track[</span><span style="color: #0086d2">&#39;track&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">][</span><span style="color: #0086d2">&#39;release_date&#39;</span><span style="color: #ffffff">]</span>
     <span style="color: #ffffff">release_year</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">release_date.split(</span><span style="color: #0086d2">&#39;-&#39;</span><span style="color: #ffffff">)[</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">]</span>
 
@@ -149,7 +149,7 @@
     <span style="color: #fb660a; font-weight: bold">except</span> <span style="color: #ffffff">FileNotFoundError:</span>
         <span style="color: #fb660a; font-weight: bold">return</span> <span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">,</span> <span style="color: #0086f7; font-weight: bold">0</span>
 
-<span style="color: #008800; font-style: italic; background-color: #0f140f"># Escribiendo la cabecera del archivo CSV</span>
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Escribir la cabecera del archivo CSV</span>
 <span style="color: #ffffff">csv_header</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">[</span><span style="color: #0086d2">&#39;track_id&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;playlist_name&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;title&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;artist&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;artist_id&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;genres&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;followers&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;album&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;release_date&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;duration_ms&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;tempo&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;energy&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;danceability&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;spotify_url&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;popularity&#39;</span><span style="color: #ffffff">]</span>
 
 <span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(</span><span style="color: #0086d2">&#39;song_data.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #0086d2">&#39;w&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">newline=</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">csvfile:</span>
@@ -162,7 +162,7 @@
 <span style="color: #008800; font-style: italic; background-color: #0f140f"># Cargar el progreso de extracción de datos desde el archivo</span>
 <span style="color: #ffffff">start_playlist_index,</span> <span style="color: #ffffff">start_track_index</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">load_progress()</span>
 
-<span style="color: #008800; font-style: italic; background-color: #0f140f"># Iterar a través de todas las playlists y extrayendo información de las canciones</span>
+<span style="color: #008800; font-style: italic; background-color: #0f140f"># Iterar a través de todas las playlists y extraer información de las canciones</span>
 <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">playlist_index,</span> <span style="color: #ffffff">playlist_id</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">enumerate(playlist_ids[start_playlist_index:],</span> <span style="color: #ffffff">start=start_playlist_index):</span>
     <span style="color: #ffffff">tracks</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">get_playlist_tracks(playlist_id)</span>
     <span style="color: #ffffff">playlist_name</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">sp.playlist(playlist_id)[</span><span style="color: #0086d2">&#39;name&#39;</span><span style="color: #ffffff">]</span>
@@ -219,8 +219,31 @@
 <span style="color: #ffffff">sorted_artists_expanded</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">expand_artist_genres(unique_artists)</span>
 
 <span style="color: #008800; font-style: italic; background-color: #0f140f"># Guardando el DataFrame de artistas ordenados en un archivo CSV</span>
-<span style="color: #ffffff">sorted_artists_expanded.to_csv(</span><span style="color: #0086d2">&#39;sorted_artists_expanded.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">index=False)</span>
+<span style="color: #ffffff">sorted_artists.to_csv(</span><span style="color: #0086d2">&#39;sorted_artists.csv&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">index=False)</span>
 </pre></div>
+
+<h2>Código utilizado 2</h2>
+
+<!-- HTML generated using hilite.me --><div style="background: #111111; overflow:auto;width:auto;background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">csv</span>
+
+<span style="color: #ffffff">input_file</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;sorted_artists.csv&#39;</span>
+<span style="color: #ffffff">output_file</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;artista_arreglado.csv&#39;</span>
+
+<span style="color: #fb660a; font-weight: bold">with</span> <span style="color: #ffffff">open(input_file,</span> <span style="color: #0086d2">&#39;r&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">newline=</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">infile,</span> <span style="color: #ffffff">open(output_file,</span> <span style="color: #0086d2">&#39;w&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">newline=</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span> <span style="color: #fb660a; font-weight: bold">as</span> <span style="color: #ffffff">outfile:</span>
+    <span style="color: #ffffff">reader</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">csv.reader(infile)</span>
+    <span style="color: #ffffff">writer</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">csv.writer(outfile)</span>
+
+    <span style="color: #008800; font-style: italic; background-color: #0f140f"># Escribe el encabezado en el archivo de salida</span>
+    <span style="color: #ffffff">headers</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">next(reader)</span>
+    <span style="color: #ffffff">writer.writerow(headers)</span>
+
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">row</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">reader:</span>
+        <span style="color: #ffffff">genres</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[</span><span style="color: #0086f7; font-weight: bold">2</span><span style="color: #ffffff">].split(</span><span style="color: #0086d2">&#39;, &#39;</span><span style="color: #ffffff">)</span>  <span style="color: #008800; font-style: italic; background-color: #0f140f"># Divide la columna de géneros por comas y espacios</span>
+        <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">genre</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">genres:</span>
+            <span style="color: #ffffff">new_row</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">row[:</span><span style="color: #0086f7; font-weight: bold">2</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">+</span> <span style="color: #ffffff">[genre]</span> <span style="color: #ffffff">+</span> <span style="color: #ffffff">row[</span><span style="color: #0086f7; font-weight: bold">3</span><span style="color: #ffffff">:]</span>  <span style="color: #008800; font-style: italic; background-color: #0f140f"># Crea una nueva fila con un solo género</span>
+            <span style="color: #ffffff">writer.writerow(new_row)</span>
+</pre></div>
+
 
 
 
